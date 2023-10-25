@@ -1,5 +1,5 @@
 {
-  "name": "clapi",
+  "name": "clhapi",
   "version": "0.1.0",
   "description": "CLI -> HTTP API",
   "main": "main.js",
@@ -9,8 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@clapi/types": "file:build/types",
-    "clapi": "^0.9.1",
+    "@clhapi/types": "file:build/types",
+    "clhapi": "^0.9.1",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "fptaylor": "file:build/plugins/fptaylor",

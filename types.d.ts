@@ -1,1 +1,1 @@
-declare module '@clapi/types'
+declare module '@clhapi/types'

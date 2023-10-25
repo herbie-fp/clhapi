@@ -1,4 +1,4 @@
-import {AbstractPlugin} from '@clapi/types';
+import {AbstractPlugin} from '@clhapi/types';
 
 class FPTaylorPlugin extends AbstractPlugin {
   commandName (): string { return "fptaylor" }
