@@ -2,15 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const types_1 = require("@clapi/types");
 class FPTaylorPlugin extends types_1.AbstractPlugin {
-    constructor() {
-        super(...arguments);
-        this.commandName = "fptaylor";
-    }
+    commandName() { return "fptaylor"; }
     processInput(input) {
-        return "Hello World";
+        return "--help";
     }
     parseOutput(text) {
-        return { msg: "Hello World" };
+        return { msg: text };
     }
 }
 exports.default = FPTaylorPlugin;

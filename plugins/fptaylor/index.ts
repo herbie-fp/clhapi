@@ -1,12 +1,12 @@
 import {AbstractPlugin} from '@clapi/types';
 
 class FPTaylorPlugin extends AbstractPlugin {
-  commandName: string = "fptaylor";
+  commandName (): string { return "fptaylor" }
   processInput (input: Object): string {
-    return "Hello World";
+    return "--help";
   }
   parseOutput (text: string): Object {
-    return {msg: "Hello World"};
+    return {msg: text};
   }
 }
 
