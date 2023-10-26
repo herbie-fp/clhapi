@@ -27,7 +27,9 @@ app.get('/', (req, res) => {
 app.use(bodyParser.json());
 
 const runCommand = (args, callback) => {
-  exec(`${plugin.commandName()} ${args}`, (error, stdout, stderr) => {
+  exec(
+    //`fptaylor <(printf "Variables\n  float64 x0 in [1.0, 2.0];\n  float64 x1 in [1.0, 2.0];\n  float64 x2 in [1.0, 2.0];\n  float64 x in [1.001, 2.0];\n  float64 y in [1.001, 2.0];\n  float64 z in [0, 999];\n\nDefinitions\n  p0 rnd64= (x0 + x1) - x2;\n  p1 rnd64= (x1 + x2) - x0;\n  p2 rnd64= (x2 + x0) - x1;\n  t rnd64= x * y;\n\n\nExpressions\n  sum rnd64= (p0 + p1) + p2;\n  nonlin1 rnd64= z / (z + 1);\n  nonlin2 rnd64= (t - 1) / (t * t - 1);\n  ")`, {shell: '/bin/bash'}, (error, stdout, stderr) => {
+    `${plugin.commandName()} ${args}`, {shell: '/bin/bash'}, (error, stdout, stderr) => {
     if (error) {
       callback(`error: ${error.message}`);
       return;
@@ -42,7 +44,7 @@ const runCommand = (args, callback) => {
 
 app.post('/', (req, res) => {
   const request = req.body;
-  runCommand(plugin.processInput(req.body), (out) => res.send(plugin.parseOutput(out)));
+  runCommand(plugin.processInput(req.body), (out) => res.send(plugin.parseOutput(out, req.body)));
 })
 
 app.listen(port, () => {
