@@ -1,8 +1,22 @@
+declare var require: any;
 import {AbstractPlugin} from '@clhapi/types';
+const util = require('util');
+const exec = util.promisify(require('child_process').exec);
 
 class FPTaylorPlugin extends AbstractPlugin {
   commandName (): string { return "fptaylor" }
-  processInput (input: Object): string {
+  async processInput (input: any): Promise<string> {
+    try {
+      const { stdout, stderr } = await exec(
+        `fpbench export --lang fptaylor <(printf "${input.formulas.join("\n")}") -`
+        , {shell: '/bin/bash'});
+      return `<(printf "${stdout}")`;
+    } catch (e) {
+      console.error(e);
+      return "";
+    }
+
+   /* 
     return `<(printf "Variables
   float64 x0 in [1.0, 2.0];
   float64 x1 in [1.0, 2.0];
@@ -22,14 +36,23 @@ Expressions
   sum rnd64= (p0 + p1) + p2;
   nonlin1 rnd64= z / (z + 1);
   nonlin2 rnd64= (t - 1) / (t * t - 1);")`;
+  */
+
+    //return `<(printf "{}")`;
+  
   }
-  parseOutput (text: string, input: Object): any {
-    const bounds = [...text.matchAll(/Bounds \(without rounding\): (.*)$/gm)];
-    const abserror = [...text.matchAll(/Absolute error \(exact\): (.*)\(/gm)];
+  async parseOutput (text: string, input: Object): Promise<any> {
     const response = [];
-    for (let i = 0; i < bounds.length; i++) {
-      response.push({bounds: bounds[i][1], absoluteError: abserror[i][1]})
+    try {
+      const bounds = await [...text.matchAll(/Bounds \(without rounding\): (.*)$/gm)];
+      const abserror = await [...text.matchAll(/Absolute error \(exact\): (.*)\(/gm)];
+      for (let i = 0; i < bounds.length; i++) {
+        response.push({bounds: bounds[i][1], absoluteError: abserror[i][1]})
+      }
+    } catch (e) {
+      console.error(e);
     }
+
     return response;
   }
 }
