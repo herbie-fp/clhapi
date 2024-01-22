@@ -10,8 +10,9 @@
 ## Instructions
 
 1. Make sure all executables are in the PATH.
-2. ``npm install``
-3. ``node main.js 3000 fptaylor``
-4. Open ``localhost:3000`` in a web browser
-5. Open the console from the page.
-6. Try the example query from ``examples.txt``
+2. Navigate to the main clhapi directory.
+3. ``npm install``
+4. ``node main.js 3000 fptaylor``
+5. Open ``localhost:3000`` in a web browser.
+6. Open the console from the page.
+7. Try the example query from ``examples.txt``.
