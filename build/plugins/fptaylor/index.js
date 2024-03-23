@@ -22,14 +22,14 @@ class FPTaylorPlugin extends types_1.AbstractPlugin {
        float64 x in [1.001, 2.0];
        float64 y in [1.001, 2.0];
        float64 z in [0, 999];
-     
+
      Definitions
        p0 rnd64= (x0 + x1) - x2;
        p1 rnd64= (x1 + x2) - x0;
        p2 rnd64= (x2 + x0) - x1;
        t rnd64= x * y;
-     
-     
+
+
      Expressions
        sum rnd64= (p0 + p1) + p2;
        nonlin1 rnd64= z / (z + 1);
@@ -38,11 +38,16 @@ class FPTaylorPlugin extends types_1.AbstractPlugin {
         //return `<(printf "{}")`;
     }
     async parseOutput(text, input) {
-        const bounds = await [...text.matchAll(/Bounds \(without rounding\): (.*)$/gm)];
-        const abserror = await [...text.matchAll(/Absolute error \(exact\): (.*)\(/gm)];
         const response = [];
-        for (let i = 0; i < bounds.length; i++) {
-            response.push({ bounds: bounds[i][1], absoluteError: abserror[i][1] });
+        try {
+            const bounds = await [...text.matchAll(/Bounds \(without rounding\): (.*)$/gm)];
+            const abserror = await [...text.matchAll(/Absolute error \(exact\): (.*)\(/gm)];
+            for (let i = 0; i < bounds.length; i++) {
+                response.push({ bounds: bounds[i][1], absoluteError: abserror[i][1] });
+            }
+        }
+        catch (e) {
+            console.error(e);
         }
         return response;
     }
